@@ -11,13 +11,24 @@ from src.components.data_transformation import DataTransformation
 from src.components.data_transformation import DataTransformationConfig
 
 
+from src.components.model_trainer import ModelTrainerConfig
+from src.components.model_trainer import ModelTrainer
+
+
+
+## A dataclass in Python is a decorator provided by the dataclasses module
+## (introduced in Python 3.7) that automatically generates special methods for classes,
+## such as __init__(), __repr__(), __eq__(), and others, based on the class attributes you define.
+
+##DataIngestionConfig can be considered as the input class that the data_ingestion.py would be requiring
 @dataclass
 class DataIngestionConfig:
     train_data_path: str=os.path.join('artifacts',"train.csv")
     test_data_path: str=os.path.join('artifacts',"test.csv")
     raw_data_path: str=os.path.join('artifacts',"data.csv")
 
-class DataIngestion:
+class DataIngestion: 
+
     def __init__(self):
         self.ingestion_config=DataIngestionConfig()
 
@@ -31,6 +42,8 @@ class DataIngestion:
 
 
             ##change all the data to data.csv for backup or shit
+            ## index = False, jo default mai indices bnte hai csv file ke woh nhi bnte
+            ## header = True, first row mai columns ke naam daaldeta hai
             df.to_csv(self.ingestion_config.raw_data_path,index=False,header=True)
 
             logging.info("Train test split initiated")
@@ -54,8 +67,9 @@ if __name__=="__main__":
     train_data,test_data=obj.initiate_data_ingestion()
 
     data_tranformation = DataTransformation()
-    data_tranformation.initiate_data_transformation(train_data,test_data)
+    train_arr, test_arr,some_object = data_tranformation.initiate_data_transformation(train_data,test_data)
 
-
+    modeltrainer = ModelTrainer()
+    print(modeltrainer.initiate_model_trainer(train_arr,test_arr))
 
 
