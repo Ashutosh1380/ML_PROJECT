@@ -1,5 +1,5 @@
 import sys
-import logging
+from src.logger import logging
 
 # Configure logging (so logs show up in console)
 logging.basicConfig(
@@ -25,13 +25,10 @@ class CustomException(Exception):
         return self.error_message
 
 
-if __name__ == "__main__":
-    try:
-        a = 1 / 0
-    except Exception as e:
-        logging.info("divide by zero error")
-        try:
-            raise CustomException(e, sys)
-        except CustomException as ce:
-            logging.error(str(ce))
+if __name__ =="__main__":
 
+    try:
+        a = 1/0
+    except Exception as e:
+        logging.info("Divide by Zero")
+        raise CustomException(e,sys)
